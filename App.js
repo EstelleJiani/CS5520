@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Header from "./Components/Header";
+import Input from './Components/Input';
 import { useState } from 'react';
 
 export default function App() {
-  const [text, setText] = useState();
   // define the app name
   const appName = 'My App';
 
@@ -12,15 +12,7 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Header name={appName}/>
-      <TextInput
-        placeholder='Type something'
-        autoCorrect={true}
-        keyboardType='default'
-        value={text}
-        style={{boarderBottomColor: "purple", boarderBottomWidth: 2}}
-        onChangeText={(changedText) => {
-          setText(changedText)}}
-        />
+      <Input />
     </View>
   );
 }
