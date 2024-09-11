@@ -3,7 +3,7 @@ import React from 'react'
 import { TextInput, StyleSheet } from 'react-native'
 import { useState } from 'react';
 
-export default function Input() {
+export default function Input(props) {
   const [text, setText] = useState("");
 
   return (
@@ -15,6 +15,7 @@ export default function Input() {
     style={{borderBottomColor: "purple", borderBottomWidth: 2}}
     onChangeText={(changedText) => {
       setText(changedText)}}
+    autoFocus={props.autoFocus}
     />
   )
 }
