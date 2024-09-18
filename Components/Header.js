@@ -1,5 +1,5 @@
 // rnf: some templates
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
 
@@ -7,8 +7,18 @@ import React from 'react';
 export default function Header(props) {
   return (
     <View>
-      {/*Use the props here */}
-      <Text>Welcome to {props.name}</Text>
+      <Text style={styles.text}>Welcome to {props.name}</Text>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: 'darkmagenta',
+    fontSize: 25,
+    borderColor: 'darkmagenta',
+    bodrderWidth: 2,
+    padding: 5,
+    marginBottom: 10,
+  },
+});
