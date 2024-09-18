@@ -19,22 +19,22 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto"/>
 
-      <View style={styles.border}>
-      <Header name={appName}/>
-      </View>
-
-      <View style={styles.button}>
-      <Button 
-          title="Add a goal"
-          onPress={() => setModalVisible(true)}
-        />
-      </View>
-
       <View style={styles.topView}>
+        <View style={styles.border}>
+          <Header name={appName}/>
+        </View>
+
+        <View style={styles.button}>
+          <Button 
+            title="Add a goal"
+            onPress={() => setModalVisible(true)}
+          />
+        </View>
+
         <Input 
           autoFocus={true} 
           inputHandler={handleInputData} 
-          visibility={modalVisible}/>
+          visibility={modalVisible} />
       </View>
 
       <View style={styles.bottomView}>
@@ -55,26 +55,30 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     fontSize: 20,
+    padding: 20,
   },
   topView:{
     flex: 1,
-    bancgroundColor: 'lightblue',
+    bancgroundColor: 'aliceblue',
     alignItems: 'center',
     justifyContent: 'center',
   },
   bottomView:{
     flex: 4,
-    backgroundColor: 'blue',
+    backgroundColor: 'cornflowerblue',
     alignItems: 'center',
     width: "100%",
   },
   border:{
-    borderColor: 'black',
+    borderColor: 'navy',
     borderWidth: 2,
   },
   button:{
     width:"30%",
     margin:5,
-    backgroundColor:"grey",
+    color:"white",
+    borderRadius: 8,
+    backgroundColor:"whitesmoke",
+
   },
 });
