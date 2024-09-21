@@ -14,11 +14,11 @@ export default function Header(props) {
 
 const styles = StyleSheet.create({
   text: {
-    color: 'darkmagenta',
-    fontSize: 25,
-    borderColor: 'darkmagenta',
-    bodrderWidth: 2,
-    padding: 5,
-    marginBottom: 10,
+    color: 'darkblue',
+    fontSize: 20,
+    borderColor: 'darkblue',
+    bodrderWidth: 1,
+    padding: 10,
+    marginBottom: 5,
   },
 });
