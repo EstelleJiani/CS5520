@@ -69,9 +69,11 @@ export default function App() {
                   renderItem={({item}) => {
           return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
         }}
-                  ListEmptyComponent={<Text style={styles.emptyText}>No goals to show</Text>}
+                  ListEmptyComponent={<Text style={styles.listEmptyText}>No goals to show</Text>}
                   ListHeaderComponent={<Text style={styles.listHeaderText}>My Goal List</Text>}
-        />
+                  ListFooterComponent={<Text style={styles.ListFooterText}>Delete All</Text>}
+                  ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+       />
       </View>
     </SafeAreaView>
   );
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
   },
-  emptyText:{
+  listEmptyText:{
     color: 'lightgrey',
     fontSize: 20,
     marginTop: 10,
@@ -101,6 +103,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 10,
     marginBottom: 10,
+  },
+  ListFooterText:{
+    color: '#99caff',
+    fontSize: 18,
+    marginTop: 10, 
+  },
+  listSeparator:{
+    height: 3,
+    backgroundColor: 'lightgrey',
   },
   topView:{
     flex: 1,
