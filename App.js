@@ -1,19 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View, SafeAreaView} from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList} from 'react-native';
 import Header from "./Components/Header";
 import Input from './Components/Input';
+import GoalItem from './Components/GoalItem';
 import { useState } from 'react';
 
 export default function App() {
   const appName = 'My App';
   const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
+  // {text:..., id:...}
+  const[goals, setGoals] = useState([]);
 
   function handleInputData(data){
     console.log("App.js", data);
-    setReceivedData(data);
+    let newGoal = {text: data, id: Math.random()};
+    // make a niew obj and store the received data as the obj's text
+    setGoals((prevGoals)=>{
+      return [...prevGoals, newGoal]
+    });
+    // setReceivedData(data);
     setModalVisible(false);
   };
+
+  function handleDeleteItem(deletedId) {
+    console.log("App.js knows goal is deleted", deletedId);
+    setGoals((prevGoals) => {
+      return prevGoals.filter((goalObj)=>{
+        return goalObj.id !== deletedId;
+      });
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,9 +55,22 @@ export default function App() {
       </View>
 
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{receivedData}</Text>
+        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            {goals.map((goalObj)=> {
+              return (
+              <View key={goalObj.id} style={styles.textContainer}>
+                <Text style={styles.text}>{goalObj.text}</Text>
+              </View>
+            );
+            })}
+        </ScrollView> */}
+        <FlatList contentContainerStyle={styles.scrollViewContainer}
+                  data={goals}
+                  renderItem={({item}) => {
+          return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
+        }}
+        />
       </View>
-
     </SafeAreaView>
   );
 }
@@ -54,8 +84,10 @@ const styles = StyleSheet.create({
   },
   text:{
     color: 'white',
-    fontSize: 20,
-    padding: 20,
+    backgroundColor: '#aaa',
+    fontSize: 100,
+    padding: 5,
+    borderRadius: 5,
   },
   topView:{
     flex: 1,
@@ -63,11 +95,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  textContainer:{
+    backgroundColor: '#aaa',
+    borderRadius: 10,
+    padding: 3,
+    margin: 10,
+  },
   bottomView:{
     flex: 4,
     backgroundColor: 'cornflowerblue',
-    alignItems: 'center',
     width: "100%",
+  },
+  scrollViewContainer:{
+    alignItems: 'center',
   },
   border:{
     borderColor: 'navy',
@@ -75,7 +115,7 @@ const styles = StyleSheet.create({
   },
   button:{
     width:"30%",
-    margin:5,
+    margin:10,
     color:"white",
     borderRadius: 8,
     backgroundColor:"whitesmoke",
