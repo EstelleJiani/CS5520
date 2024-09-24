@@ -38,7 +38,9 @@ export default function App() {
       </View>
 
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{receivedData}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{receivedData}</Text>
+        </View>
       </View>
 
     </SafeAreaView>
@@ -54,14 +56,22 @@ const styles = StyleSheet.create({
   },
   text:{
     color: 'white',
-    fontSize: 20,
-    padding: 20,
+    backgroundColor: '#aaa',
+    fontSize: 15,
+    padding: 5,
+    borderRadius: 5,
   },
   topView:{
     flex: 1,
     bancgroundColor: 'aliceblue',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  textContainer:{
+    backgroundColor: '#aaa',
+    borderRadius: 10,
+    padding: 3,
+    margin: 10,
   },
   bottomView:{
     flex: 4,
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
   },
   button:{
     width:"30%",
-    margin:5,
+    margin:10,
     color:"white",
     borderRadius: 8,
     backgroundColor:"whitesmoke",
