@@ -84,11 +84,12 @@ export default function App() {
                     null}
                   ListFooterComponent={
                     goals.length > 0 ?
-                    <Button 
-                      style={styles.ListFooterButton}
-                      title="Delete All"
-                      onPress={handleDeleteAll}
-                    /> 
+                    <View style={styles.button}>
+                      <Button 
+                        title="Delete All"
+                        onPress={handleDeleteAll}
+                      /> 
+                    </View>
                     : null }
                   ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
        />
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   listEmptyText:{
-    color: 'lightgrey',
+    color: 'white',
     fontSize: 20,
     marginTop: 10,
   },
@@ -121,11 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     marginBottom: 10,
-  },
-  ListFooterButton:{
-    color: '#99caff',
-    fontSize: 20,
-    marginTop: 10, 
   },
   listSeparator:{
     height: 3,
