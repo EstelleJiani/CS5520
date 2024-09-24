@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList} from 'react-native';
 import Header from "./Components/Header";
 import Input from './Components/Input';
+import GoalItem from './Components/GoalItem';
 import { useState } from 'react';
 
 export default function App() {
@@ -21,6 +22,15 @@ export default function App() {
     // setReceivedData(data);
     setModalVisible(false);
   };
+
+  function handleDeleteItem(deletedId) {
+    console.log("App.js knows goal is deleted", deletedId);
+    setGoals((prevGoals) => {
+      return prevGoals.filter((goalObj)=>{
+        return goalObj.id !== deletedId;
+      });
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -57,11 +67,7 @@ export default function App() {
         <FlatList contentContainerStyle={styles.scrollViewContainer}
                   data={goals}
                   renderItem={({item}) => {
-          return (
-            <View key={item.id} style={styles.textContainer}>
-              <Text style={styles.text}>{item.text}</Text>
-            </View>
-          );
+          return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
         }}
         />
       </View>
