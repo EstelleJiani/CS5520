@@ -8,10 +8,17 @@ export default function App() {
   const appName = 'My App';
   const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
+  // {text:..., id:...}
+  const[goals, setGoals] = useState([]);
 
   function handleInputData(data){
     console.log("App.js", data);
-    setReceivedData(data);
+    let newGoal = {text: data, id: Math.random};
+    // make a niew obj and store the received data as the obj's text
+    setGoals((prevGoals)=>{
+      return [...prevGoals, newGoal]
+    });
+    // setReceivedData(data);
     setModalVisible(false);
   };
 
@@ -38,11 +45,15 @@ export default function App() {
       </View>
 
       <View style={styles.bottomView}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>{receivedData}</Text>
-        </View>
+        {/* use goal.map() and return a view and text for each array items */}
+        {goals.map((goalObj)=> {
+          return (
+          <View key={goalObj.id} style={styles.textContainer}>
+            <Text style={styles.text}>{goalObj.text}</Text>
+          </View>
+        );
+      })}
       </View>
-
     </SafeAreaView>
   );
 }
