@@ -69,6 +69,7 @@ export default function App() {
                   renderItem={({item}) => {
           return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
         }}
+                  ListEmptyComponent={<Text style={styles.emptyText}>No goals to show</Text>}
         />
       </View>
     </SafeAreaView>
@@ -85,9 +86,14 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     backgroundColor: '#aaa',
-    fontSize: 100,
+    fontSize: 50,
     padding: 5,
     borderRadius: 5,
+  },
+  emptyText:{
+    color: 'lightgrey',
+    fontSize: 20,
+    marginTop: 10,
   },
   topView:{
     flex: 1,
