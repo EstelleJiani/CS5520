@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View, SafeAreaView} from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList} from 'react-native';
 import Header from "./Components/Header";
 import Input from './Components/Input';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ export default function App() {
 
   function handleInputData(data){
     console.log("App.js", data);
-    let newGoal = {text: data, id: Math.random};
+    let newGoal = {text: data, id: Math.random()};
     // make a niew obj and store the received data as the obj's text
     setGoals((prevGoals)=>{
       return [...prevGoals, newGoal]
@@ -45,14 +45,25 @@ export default function App() {
       </View>
 
       <View style={styles.bottomView}>
-        {/* use goal.map() and return a view and text for each array items */}
-        {goals.map((goalObj)=> {
+        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            {goals.map((goalObj)=> {
+              return (
+              <View key={goalObj.id} style={styles.textContainer}>
+                <Text style={styles.text}>{goalObj.text}</Text>
+              </View>
+            );
+            })}
+        </ScrollView> */}
+        <FlatList contentContainerStyle={styles.scrollViewContainer}
+                  data={goals}
+                  renderItem={({item}) => {
           return (
-          <View key={goalObj.id} style={styles.textContainer}>
-            <Text style={styles.text}>{goalObj.text}</Text>
-          </View>
-        );
-      })}
+            <View key={item.id} style={styles.textContainer}>
+              <Text style={styles.text}>{item.text}</Text>
+            </View>
+          );
+        }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     backgroundColor: '#aaa',
-    fontSize: 15,
+    fontSize: 100,
     padding: 5,
     borderRadius: 5,
   },
@@ -87,8 +98,10 @@ const styles = StyleSheet.create({
   bottomView:{
     flex: 4,
     backgroundColor: 'cornflowerblue',
-    alignItems: 'center',
     width: "100%",
+  },
+  scrollViewContainer:{
+    alignItems: 'center',
   },
   border:{
     borderColor: 'navy',
