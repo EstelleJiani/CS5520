@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList} from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList, Alert} from 'react-native';
 import Header from "./Components/Header";
 import Input from './Components/Input';
 import GoalItem from './Components/GoalItem';
@@ -30,6 +30,13 @@ export default function App() {
         return goalObj.id !== deletedId;
       });
     });
+  }
+
+  function handleDeleteAll() {
+    Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
+                  {text: "No", style: "cancel"},
+                  {text: "Yes", onPress:() => setGoals([]) }
+                ]);
   }
 
   return (
@@ -69,9 +76,20 @@ export default function App() {
                   renderItem={({item}) => {
           return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
         }}
-                  ListEmptyComponent={<Text style={styles.listEmptyText}>No goals to show</Text>}
-                  ListHeaderComponent={<Text style={styles.listHeaderText}>My Goal List</Text>}
-                  ListFooterComponent={<Text style={styles.ListFooterText}>Delete All</Text>}
+                  ListEmptyComponent={
+                    <Text style={styles.listEmptyText}>No goals to show</Text>}
+                  ListHeaderComponent={
+                    goals.length > 0 ?
+                    <Text style={styles.listHeaderText}>My Goal List</Text> :
+                    null}
+                  ListFooterComponent={
+                    goals.length > 0 ?
+                    <Button 
+                      style={styles.ListFooterButton}
+                      title="Delete All"
+                      onPress={handleDeleteAll}
+                    /> 
+                    : null }
                   ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
        />
       </View>
@@ -89,7 +107,7 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     backgroundColor: '#aaa',
-    fontSize: 30,
+    fontSize: 20,
     padding: 5,
     borderRadius: 5,
   },
@@ -100,13 +118,13 @@ const styles = StyleSheet.create({
   },
   listHeaderText:{
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
     marginTop: 10,
     marginBottom: 10,
   },
-  ListFooterText:{
+  ListFooterButton:{
     color: '#99caff',
-    fontSize: 18,
+    fontSize: 20,
     marginTop: 10, 
   },
   listSeparator:{

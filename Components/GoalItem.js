@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     backgroundColor: '#aaa',
-    fontSize: 100,
+    fontSize: 40,
     padding: 5,
     borderRadius: 5,
   },
