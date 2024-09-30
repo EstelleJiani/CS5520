@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList} from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList, Alert} from 'react-native';
 import Header from "./Components/Header";
 import Input from './Components/Input';
 import GoalItem from './Components/GoalItem';
@@ -30,6 +30,13 @@ export default function App() {
         return goalObj.id !== deletedId;
       });
     });
+  }
+
+  function handleDeleteAll() {
+    Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
+                  {text: "No", style: "cancel"},
+                  {text: "Yes", onPress:() => setGoals([]) }
+                ]);
   }
 
   return (
@@ -69,7 +76,23 @@ export default function App() {
                   renderItem={({item}) => {
           return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
         }}
-        />
+                  ListEmptyComponent={
+                    <Text style={styles.listEmptyText}>No goals to show</Text>}
+                  ListHeaderComponent={
+                    goals.length > 0 ?
+                    <Text style={styles.listHeaderText}>My Goal List</Text> :
+                    null}
+                  ListFooterComponent={
+                    goals.length > 0 ?
+                    <View style={styles.button}>
+                      <Button 
+                        title="Delete All"
+                        onPress={handleDeleteAll}
+                      /> 
+                    </View>
+                    : null }
+                  ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+       />
       </View>
     </SafeAreaView>
   );
@@ -85,9 +108,24 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     backgroundColor: '#aaa',
-    fontSize: 100,
+    fontSize: 20,
     padding: 5,
     borderRadius: 5,
+  },
+  listEmptyText:{
+    color: 'white',
+    fontSize: 20,
+    marginTop: 10,
+  },
+  listHeaderText:{
+    color: 'white',
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  listSeparator:{
+    height: 3,
+    backgroundColor: 'lightgrey',
   },
   topView:{
     flex: 1,
