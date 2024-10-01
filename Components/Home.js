@@ -162,9 +162,7 @@ const styles = StyleSheet.create({
   button:{
     width:"30%",
     margin:10,
-    color:"white",
     borderRadius: 8,
     backgroundColor:"whitesmoke",
-
   },
 });

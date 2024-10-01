@@ -8,14 +8,22 @@ export default function GoalDetails({navigation, route}) {
     navigation.push("Details");
   }
   return (
-    <View>
+    <View style={styles.container}>
        {route.params ? (
       <Text>This is the details of a goal with text {route.params.goalData.text}  
-      and id:{route.params.goalData.id}</Text>
+      and its id is:{route.params.goalData.id}</Text>
        ):( <Text> More Details</Text>)}
-      <Button title="More Details" onPress={moreDetailsHandler}/>
+      <View>
+        <Button title="More Details" onPress={moreDetailsHandler}/>
+      </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})

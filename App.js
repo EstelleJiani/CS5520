@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import Home from './Components/Home'
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,12 +12,17 @@ console.log(Stack)
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={
+        {
+          headerStyle: {
+            backgroundColor: 'whitesmoke',
+          },
+          headerTintColor: 'royalblue',
+        }
+      }>
         <Stack.Screen name="Home" 
                       component={Home}
                       options={{
-                        headerStyle: {backgroundColor: 'aliceblue'},
-                        headerTintColor: 'white',
                         title: 'Goals',
                         }}
                       />
