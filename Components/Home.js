@@ -5,7 +5,7 @@ import Input from './Input';
 import GoalItem from './GoalItem';
 import { useState } from 'react';
 
-export default function Home() {
+export default function Home({navigation}) {
   const appName = 'My App';
   const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
@@ -24,12 +24,18 @@ export default function Home() {
   };
 
   function handleDeleteItem(deletedId) {
-    console.log("App.js knows goal is deleted", deletedId);
+    console.log("Home.js knows goal is deleted", deletedId);
     setGoals((prevGoals) => {
       return prevGoals.filter((goalObj)=>{
         return goalObj.id !== deletedId;
       });
     });
+  }
+
+  function handlePressGoal(pressId) {
+    //TODO navigate to GoalDetails
+    console.log("Home.js know goal detail is pressed", pressId);
+    navigation.navigate("Details", {goalData: pressId});
   }
 
   function handleDeleteAll() {
@@ -74,7 +80,9 @@ export default function Home() {
         <FlatList contentContainerStyle={styles.scrollViewContainer}
                   data={goals}
                   renderItem={({item}) => {
-          return <GoalItem goalObj={item} deleteHandler={handleDeleteItem}/>;
+          return <GoalItem goalObj={item} 
+                  deleteHandler={handleDeleteItem}
+                  pressHandler={handlePressGoal}/>;
         }}
                   ListEmptyComponent={
                     <Text style={styles.listEmptyText}>No goals to show</Text>}
