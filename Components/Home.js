@@ -33,7 +33,7 @@ export default function Home({navigation}) {
   }
 
   function handlePressGoal(pressId) {
-    //TODO navigate to GoalDetails
+    //Navigate to GoalDetails
     console.log("Home.js know goal detail is pressed", pressId);
     navigation.navigate("Details", {goalData: pressId});
   }
@@ -77,29 +77,30 @@ export default function Home({navigation}) {
             );
             })}
         </ScrollView> */}
-        <FlatList contentContainerStyle={styles.scrollViewContainer}
-                  data={goals}
-                  renderItem={({item}) => {
-          return <GoalItem goalObj={item} 
-                  deleteHandler={handleDeleteItem}
-                  pressHandler={handlePressGoal}/>;
-        }}
-                  ListEmptyComponent={
-                    <Text style={styles.listEmptyText}>No goals to show</Text>}
-                  ListHeaderComponent={
-                    goals.length > 0 ?
-                    <Text style={styles.listHeaderText}>My Goal List</Text> :
-                    null}
-                  ListFooterComponent={
-                    goals.length > 0 ?
-                    <View style={styles.button}>
-                      <Button 
-                        title="Delete All"
-                        onPress={handleDeleteAll}
-                      /> 
-                    </View>
-                    : null }
-                  ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+        <FlatList
+          contentContainerStyle={styles.scrollViewContainer}
+          data={goals}
+          renderItem={({item}) => {
+            return <GoalItem goalObj={item} 
+                    deleteHandler={handleDeleteItem}
+                    pressHandler={handlePressGoal}/>;
+          }}
+          ListEmptyComponent={
+            <Text style={styles.listEmptyText}>No goals to show</Text>}
+          ListHeaderComponent={
+            goals.length > 0 ?
+            <Text style={styles.listHeaderText}>My Goal List</Text> :
+            null}
+          ListFooterComponent={
+            goals.length > 0 ?
+            <View style={styles.button}>
+              <Button 
+                title="Delete All"
+                onPress={handleDeleteAll}
+              /> 
+            </View>
+            : null }
+          ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
        />
       </View>
     </SafeAreaView>

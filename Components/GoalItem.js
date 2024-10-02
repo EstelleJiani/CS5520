@@ -2,7 +2,7 @@ import { Button, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
-const GoalItem = ({goalObj, deleteHandler, pressHandler}) => {
+const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
   const navigation = useNavigation();
 
   function handleDeleteItem() {
