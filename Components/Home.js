@@ -4,6 +4,7 @@ import Header from "./Header";
 import Input from './Input';
 import GoalItem from './GoalItem';
 import { useState } from 'react';
+import PressableButton from './PressableButton';
 
 export default function Home({navigation}) {
   const appName = 'My App';
@@ -55,10 +56,17 @@ export default function Home({navigation}) {
         </View>
 
         <View style={styles.button}>
-          <Button 
+          <PressableButton
+            pressedHandler={function() {
+              setModalVisible(true);
+            }}
+            componentStyle={{backgroundColor:"grey"}}>
+            <Text>Add a goal</Text>
+          </PressableButton>
+          {/* <Button 
             title="Add a goal"
             onPress={() => setModalVisible(true)}
-          />
+          /> */}
         </View>
 
         <Input 
