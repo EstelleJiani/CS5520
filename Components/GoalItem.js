@@ -2,6 +2,7 @@ import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from './PressableButton';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
   const navigation = useNavigation();
@@ -32,7 +33,9 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
           componentStyle={styles.deleteButton}
           pressedHandler={handleDeleteItem}
           pressedStyle={styles.pressedStyle}>
-          <Text style={styles.deleteButton}>X</Text>
+          <AntDesign name="delete" size={24} color="darkgrey"/>
+          {/* <Text style={styles.deleteButton}>X</Text> */}
+          
         </PressableButton>
         {/* <Button title="i" color='grey' onPress={handlePress}/> */}
       </Pressable>
