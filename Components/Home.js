@@ -56,17 +56,17 @@ export default function Home({navigation}) {
         </View>
 
         <View style={styles.button}>
-          <PressableButton
+          {/* <PressableButton
             pressedHandler={function() {
               setModalVisible(true);
             }}
             componentStyle={{backgroundColor:"grey"}}>
             <Text>Add a goal</Text>
-          </PressableButton>
-          {/* <Button 
+          </PressableButton> */}
+          <Button 
             title="Add a goal"
             onPress={() => setModalVisible(true)}
-          /> */}
+          />
         </View>
 
         <Input 
