@@ -1,6 +1,7 @@
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
+import PressableButton from './PressableButton';
 
 const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
   const navigation = useNavigation();
@@ -26,7 +27,13 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
         }}
         android_ripple={{ color: 'lightgrey', radius: 25 }}>
         <Text style={styles.text}>{goalObj.text}</Text>
-        <Button title="X" color='grey' onPress={handleDeleteItem}/>
+        {/* <Button title="X" color='grey' onPress={handleDeleteItem}/> */}
+        <PressableButton 
+          componentStyle={styles.deleteButton}
+          pressedHandler={handleDeleteItem}
+          pressedStyle={styles.pressedStyle}>
+          <Text style={styles.deleteButton}>X</Text>
+        </PressableButton>
         {/* <Button title="i" color='grey' onPress={handlePress}/> */}
       </Pressable>
     </View>
@@ -55,7 +62,14 @@ const styles = StyleSheet.create({
   pressedStyle:{
     opacity: 0.5,
     backgroundColor: 'lightsteelblue',
-  }
+  },
+  deleteButton:{
+    backgroundColor: 'grey',
+  },
+  deleteText:{
+    color: 'white',
+    fontSize: 20,
+  },
 })
 
 export default GoalItem
