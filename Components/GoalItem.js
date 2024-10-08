@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,9 +16,13 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
 
   return (
     <View key={goalObj.id} style={styles.textContainer}>
-      <Text style={styles.text}>{goalObj.text}</Text>
-      <Button title="X" color='grey' onPress={handleDeleteItem}/>
-      <Button title="i" color='grey' onPress={handlePress}/>
+      <Pressable
+        onPress={handlePress}
+        style={styles.horizontalContainer}>
+        <Text style={styles.text}>{goalObj.text}</Text>
+        <Button title="X" color='grey' onPress={handleDeleteItem}/>
+        {/* <Button title="i" color='grey' onPress={handlePress}/> */}
+      </Pressable>
     </View>
   )
 };
@@ -36,6 +40,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  horizontalContainer:{
     flexDirection: 'row',
     alignItems: 'center',
   },
