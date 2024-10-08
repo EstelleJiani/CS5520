@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, Button} from 'react-native'
 import React, {useEffect, useState} from 'react'
+import PressableButton from './PressableButton';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function GoalDetails({navigation, route}) {
   // Tracking the button press
@@ -14,25 +16,22 @@ export default function GoalDetails({navigation, route}) {
 
 
   function warningHandler() {
-    setWarning((prevWarning)=> {
-      const newWarning = !prevWarning;
-
-      navigation.setOptions({
-        title: newWarning ? "Warning": route.params.goalData.text,
-      });
-      return newWarning;
-    });
+    setWarning((prevWarning)=> !prevWarning);
   }
 
-
-  // Set the header right button warning when screen loads
   useEffect(() => {
     navigation.setOptions({
+      title: warning ? "Warning": route.params.goalData.text,
       headerRight: () => (
-        <Button title="Warning" color="royalblue" onPress={warningHandler}/>
+        <PressableButton
+          pressedHandler={warningHandler}
+          componentStyle={styles.warningStyle}
+          pressedStyle={styles.pressedWarningButtonStyle}>
+          <AntDesign name="warning" size={24} color="royalblue" />
+        </PressableButton>
       ),
     });
-  }, [navigation, warning]);
+  }, [navigation, warning, route.params]);
 
   return (
     <View style={styles.container}>
@@ -63,5 +62,8 @@ const styles = StyleSheet.create({
   },
   warningStyle:{
     color: 'red',
+  },
+  pressedWarningButtonStyle:{
+    color: 'darkred',
   },
 })
