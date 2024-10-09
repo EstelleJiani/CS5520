@@ -1,10 +1,10 @@
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Alert } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from './PressableButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
+const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/ separators }) => {
   const navigation = useNavigation();
 
   function handleDeleteItem() {
@@ -16,15 +16,32 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/}) => {
     navigation.navigate("Details", {goalData: goalObj});
   }
 
+  // Alert user before deleting with a long press
+  function handleLongPress() {
+    Alert.alert(
+      "Delete Goal",
+      `Are you sure you want to delete the goal: ${goalObj.text}?`,
+      [
+        {text: "No", style: "cancel"},
+        {text: "Yes", onPress: handleDeleteItem}
+      ]
+    );
+  }
+
   return (
     <View key={goalObj.id} style={styles.textContainer}>
       <Pressable
         onPress={handlePress}
+        onLongPress={handleLongPress}
+        onPressIn={()=>separators.highlight()}
+        onPressOut={()=>separators.unhighlight()}
         // style={styles.horizontalContainer}
         style={({pressed})=>{
           // styles.textContainer,
           // pressed ? styles.pressedStyle : null,
-          return [styles.horizontalContainer, pressed && styles.pressedStyle]
+          return [
+            styles.horizontalContainer,
+            pressed && styles.pressedStyle]
         }}
         android_ripple={{ color: 'lightgrey', radius: 25 }}>
         <Text style={styles.text}>{goalObj.text}</Text>
