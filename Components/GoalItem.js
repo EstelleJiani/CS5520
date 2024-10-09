@@ -43,7 +43,7 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/ separators }) => {
             styles.goalItemContainer,
             pressed && styles.pressedStyle]
         }}
-        android_ripple={{ color: 'lightgrey', radius: 25 }}>
+        android_ripple={{ color: 'lightgrey', radius: 50, borderless:false }}>
         <Text style={styles.text}>{goalObj.text}</Text>
         {/* <Button title="X" color='grey' onPress={handleDeleteItem}/> */}
         <PressableButton 
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     // padding: 10,
     margin: 10,
+    overflow: 'hidden',
     // flexDirection: 'row',
     // alignItems: 'center',
   },
@@ -98,5 +99,3 @@ const styles = StyleSheet.create({
 })
 
 export default GoalItem
-
-
