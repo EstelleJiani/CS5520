@@ -40,7 +40,7 @@ const GoalItem = ({goalObj, deleteHandler, /*pressHandler*/ separators }) => {
           // styles.textContainer,
           // pressed ? styles.pressedStyle : null,
           return [
-            styles.horizontalContainer,
+            styles.goalItemContainer,
             pressed && styles.pressedStyle]
         }}
         android_ripple={{ color: 'lightgrey', radius: 25 }}>
@@ -68,16 +68,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textContainer:{
+    // backgroundColor: '#aaa',
+    // borderRadius: 10,
+    // padding: 10,
+    margin: 10,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+  },
+  goalItemContainer:{
     backgroundColor: '#aaa',
     borderRadius: 10,
     padding: 10,
     margin: 10,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  horizontalContainer:{
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   pressedStyle:{
     opacity: 0.5,
