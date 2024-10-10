@@ -4,46 +4,40 @@ import Header from "./Header";
 import Input from './Input';
 import GoalItem from './GoalItem';
 import { useState } from 'react';
-import PressableButton from './PressableButton';
+// import PressableButton from './PressableButton';
 
 export default function Home({navigation}) {
   const appName = 'My App';
-  const[receivedData, setReceivedData] = useState("");
+  // const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
   // {text:..., id:...}
   const[goals, setGoals] = useState([]);
 
   function handleInputData(data){
-    console.log("App.js", data);
+    // console.log("App.js", data);
     let newGoal = {text: data, id: Math.random()};
     // make a niew obj and store the received data as the obj's text
-    setGoals((prevGoals)=>{
-      return [...prevGoals, newGoal]
-    });
+    setGoals((prevGoals)=>{return [...prevGoals, newGoal]});
     // setReceivedData(data);
     setModalVisible(false);
   };
 
   function handleDeleteItem(deletedId) {
-    console.log("Home.js knows goal is deleted", deletedId);
-    setGoals((prevGoals) => {
-      return prevGoals.filter((goalObj)=>{
-        return goalObj.id !== deletedId;
-      });
-    });
+    // console.log("Home.js knows goal is deleted", deletedId);
+    setGoals((prevGoals) => prevGoals.filter((goalObj)=> goalObj.id !== deletedId));
   }
 
   function handlePressGoal(pressId) {
     //Navigate to GoalDetails
-    console.log("Home.js know goal detail is pressed", pressId);
+    // console.log("Home.js know goal detail is pressed", pressId);
     navigation.navigate("Details", {goalData: pressId});
   }
 
   function handleDeleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
-                  {text: "No", style: "cancel"},
-                  {text: "Yes", onPress:() => setGoals([]) }
-                ]);
+      {text: "No", style: "cancel"},
+      {text: "Yes", onPress:() => setGoals([]) },
+    ]);
   }
 
   return (
@@ -56,17 +50,17 @@ export default function Home({navigation}) {
         </View>
 
         <View style={styles.button}>
-          <PressableButton
+          {/* <PressableButton
             pressedHandler={function() {
               setModalVisible(true);
             }}
             componentStyle={{backgroundColor:"grey"}}>
             <Text>Add a goal</Text>
-          </PressableButton>
-          {/* <Button 
+          </PressableButton> */}
+          <Button 
             title="Add a goal"
             onPress={() => setModalVisible(true)}
-          /> */}
+          />
         </View>
 
         <Input 
@@ -88,11 +82,23 @@ export default function Home({navigation}) {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({item}) => {
-            return <GoalItem goalObj={item} 
-                    deleteHandler={handleDeleteItem}
-                    pressHandler={handlePressGoal}/>;
-          }}
+          renderItem={({item, separators}) => (
+            // {
+            //   return <GoalItem goalObj={item} 
+            //           deleteHandler={handleDeleteItem}
+            //           pressHandler={handlePressGoal}/>;
+            // }}
+            <GoalItem
+              goalObj={item} 
+              deleteHandler={handleDeleteItem}
+              pressHandler={()=> {handlePressGoal(item.id)}}
+              separators={separators}
+            />
+          )}
+
+          ItemSeparatorComponent={({highlighted}) => (
+            <View style={[styles.listSeparator, highlighted && styles.separatorHighlighted]}/>
+          )}
           ListEmptyComponent={
             <Text style={styles.listEmptyText}>No goals to show</Text>}
           ListHeaderComponent={
@@ -108,7 +114,7 @@ export default function Home({navigation}) {
               /> 
             </View>
             : null }
-          ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+          // ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
        />
       </View>
     </SafeAreaView>
@@ -173,5 +179,9 @@ const styles = StyleSheet.create({
     margin:10,
     borderRadius: 8,
     backgroundColor:"whitesmoke",
+  },
+  separatorHighlighted:{
+    height: 2,
+    backgroundColor: 'blue',
   },
 });
