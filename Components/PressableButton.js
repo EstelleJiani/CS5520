@@ -12,7 +12,7 @@ export default function PressableButton({
         style={({pressed})=>[
             styles.defaultStyle,
             componentStyle,
-            // pressed && defaultPressedStyle,
+            pressed && styles.defaultPressedStyle,
             pressed && pressedStyle
           ]}>
         <View>
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'beige',
   },
   defaultPressedStyle:{
-    backgroundColor: 'pink',
+    opacity: 0.5,
   },
 })

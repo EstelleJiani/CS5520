@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   pressedWarningButtonStyle:{
-    color: 'darkred',
+    backgroundColor: 'orange',
   },
 })
