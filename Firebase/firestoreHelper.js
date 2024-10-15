@@ -1,7 +1,7 @@
 // addDoc will automatically add a ids, addSet will ask for ID 
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, query } from "firebase/firestore"; 
 import { database } from "./firebaseSetup";
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, getDocs } from 'firebase/firestore';
 
 export async function writeToDB(collectionName, data) {
   // console.log(database);
@@ -22,5 +22,27 @@ export async function deleteFromDB(collectionName, deleteId) {
   }
   catch (err) {
     console.log("delete from DB ", err);
+  }
+}
+
+// export async function deleteAllFromDB(collectionName) {
+//   // try {
+//   //   const querySnapshot = await collection(database, collectionName);
+//   //   querySnapshot.forEach((doc) => {
+//   //     deleteDoc(doc);
+//   //   });
+//   // } catch (err) {
+//   //   console.log("delete all from DB ", err);
+//   // }
+// }
+
+export async function deleteAllFromDB(collectionName) {
+  try{
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    querySnapshot.forEach((docSnapshot) => {
+      deleteFromDB(collectionName, docSnapshot.id);
+    });
+  } catch (err) {
+    console.log("delete all from db", err);
   }
 }

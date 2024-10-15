@@ -6,10 +6,9 @@ import GoalItem from './GoalItem';
 import { useState, useEffect } from 'react';
 import PressableButton from './PressableButton';
 import { database } from '../Firebase/firebaseSetup';
-import { writeToDB, deleteFromDB } from '../Firebase/firestoreHelper';
+import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { collection } from 'firebase/firestore';
-
 
 export default function Home({navigation}) {
   // console.log(database);
@@ -67,7 +66,7 @@ export default function Home({navigation}) {
   function handleDeleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
                   {text: "No", style: "cancel"},
-                  {text: "Yes", onPress:() => setGoals([]) }
+                  {text: "Yes", onPress:() => deleteAllFromDB("goals")},
                 ]);
   }
 
