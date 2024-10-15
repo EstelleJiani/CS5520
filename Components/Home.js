@@ -15,7 +15,7 @@ export default function Home({navigation}) {
   // writeToDB({name: "Neda"}, "goals");
 
   const appName = 'My App';
-  const[receivedData, setReceivedData] = useState("");
+  // const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
   // {text:..., id:...}
   const[goals, setGoals] = useState([]); 
@@ -43,6 +43,7 @@ export default function Home({navigation}) {
     // setGoals((prevGoals)=>{
     //   return [...prevGoals, newGoal]
     // });
+
     // setReceivedData(data);
     setModalVisible(false);
   };
@@ -55,11 +56,12 @@ export default function Home({navigation}) {
     //   });
     // });
     deleteFromDB("goals", deletedId);
+
   }
 
   function handlePressGoal(pressId) {
     //Navigate to GoalDetails
-    console.log("Home.js know goal detail is pressed", pressId);
+    // console.log("Home.js know goal detail is pressed", pressId);
     navigation.navigate("Details", {goalData: pressId});
   }
 
@@ -80,17 +82,17 @@ export default function Home({navigation}) {
         </View>
 
         <View style={styles.button}>
-          <PressableButton
+          {/* <PressableButton
             pressedHandler={function() {
               setModalVisible(true);
             }}
             componentStyle={{backgroundColor:"grey"}}>
             <Text>Add a goal</Text>
-          </PressableButton>
-          {/* <Button 
+          </PressableButton> */}
+          <Button 
             title="Add a goal"
             onPress={() => setModalVisible(true)}
-          /> */}
+          />
         </View>
 
         <Input 
@@ -112,11 +114,23 @@ export default function Home({navigation}) {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({item}) => {
-            return <GoalItem goalObj={item} 
-                    deleteHandler={handleDeleteItem}
-                    pressHandler={handlePressGoal}/>;
-          }}
+          renderItem={({item, separators}) => (
+            // {
+            //   return <GoalItem goalObj={item} 
+            //           deleteHandler={handleDeleteItem}
+            //           pressHandler={handlePressGoal}/>;
+            // }}
+            <GoalItem
+              goalObj={item} 
+              deleteHandler={handleDeleteItem}
+              pressHandler={()=> {handlePressGoal(item.id)}}
+              separators={separators}
+            />
+          )}
+
+          ItemSeparatorComponent={({highlighted}) => (
+            <View style={[styles.listSeparator, highlighted && styles.separatorHighlighted]}/>
+          )}
           ListEmptyComponent={
             <Text style={styles.listEmptyText}>No goals to show</Text>}
           ListHeaderComponent={
@@ -132,7 +146,7 @@ export default function Home({navigation}) {
               /> 
             </View>
             : null }
-          ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+          // ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
        />
       </View>
     </SafeAreaView>
@@ -197,5 +211,9 @@ const styles = StyleSheet.create({
     margin:10,
     borderRadius: 8,
     backgroundColor:"whitesmoke",
+  },
+  separatorHighlighted:{
+    height: 2,
+    backgroundColor: 'blue',
   },
 });
