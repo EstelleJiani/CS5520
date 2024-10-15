@@ -4,9 +4,11 @@ import Home from './Components/Home'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import GoalDetails from './Components/GoalDetails';
+import { app } from './Firebase/firebaseSetup';
 
 const Stack = createNativeStackNavigator();
-console.log(Stack)
+console.log(Stack);
+console.log(app);
 
 export default function App() {
   return (

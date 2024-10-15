@@ -3,28 +3,60 @@ import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, Fl
 import Header from "./Header";
 import Input from './Input';
 import GoalItem from './GoalItem';
-import { useState } from 'react';
-// import PressableButton from './PressableButton';
+import { useState, useEffect } from 'react';
+import PressableButton from './PressableButton';
+import { database } from '../Firebase/firebaseSetup';
+import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 
 export default function Home({navigation}) {
+  // console.log(database);
+  // writeToDB({name: "Neda"}, "goals");
+
   const appName = 'My App';
   // const[receivedData, setReceivedData] = useState("");
   const[modalVisible, setModalVisible] = useState(false);
   // {text:..., id:...}
-  const[goals, setGoals] = useState([]);
+  const[goals, setGoals] = useState([]); 
+
+  useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+      let goals = [];
+      querySnapshot.forEach((docSnapshot) => {
+        console.log(docSnapshot.id);
+        goals.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        console.log(goals);
+      });
+      setGoals(goals);
+    });
+  }, []);
+
 
   function handleInputData(data){
-    // console.log("App.js", data);
-    let newGoal = {text: data, id: Math.random()};
+    console.log("App.js", data);
+    // let newGoal = {text: data, id: Math.random()};
+    let newGoal = {text: data};
+    writeToDB( "goals",newGoal);
+
     // make a niew obj and store the received data as the obj's text
-    setGoals((prevGoals)=>{return [...prevGoals, newGoal]});
+    // setGoals((prevGoals)=>{
+    //   return [...prevGoals, newGoal]
+    // });
+
     // setReceivedData(data);
     setModalVisible(false);
   };
 
   function handleDeleteItem(deletedId) {
     // console.log("Home.js knows goal is deleted", deletedId);
-    setGoals((prevGoals) => prevGoals.filter((goalObj)=> goalObj.id !== deletedId));
+    // setGoals((prevGoals) => {
+    //   return prevGoals.filter((goalObj)=>{
+    //     return goalObj.id !== deletedId;
+    //   });
+    // });
+    deleteFromDB("goals", deletedId);
+
   }
 
   function handlePressGoal(pressId) {
@@ -35,9 +67,9 @@ export default function Home({navigation}) {
 
   function handleDeleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
-      {text: "No", style: "cancel"},
-      {text: "Yes", onPress:() => setGoals([]) },
-    ]);
+                  {text: "No", style: "cancel"},
+                  {text: "Yes", onPress:() => deleteAllFromDB("goals")},
+                ]);
   }
 
   return (
