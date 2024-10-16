@@ -21,15 +21,20 @@ export default function Home({navigation}) {
   const[goals, setGoals] = useState([]); 
 
   useEffect(() => {
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    // Set up th listener and store the information
+    const stopListening = onSnapshot(collection(database, "goals"), (querySnapshot) => {
       let goals = [];
       querySnapshot.forEach((docSnapshot) => {
         console.log(docSnapshot.id);
+        // Add the document data and id to the goals array
         goals.push({ ...docSnapshot.data(), id: docSnapshot.id });
         console.log(goals);
       });
+      // render the goals array
       setGoals(goals);
     });
+    // return the cleanup function so to stop listening
+    return () => stopListening();
   }, []);
 
 

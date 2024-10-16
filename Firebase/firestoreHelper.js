@@ -1,18 +1,17 @@
 // addDoc will automatically add a ids, addSet will ask for ID 
-import { collection, addDoc, query } from "firebase/firestore"; 
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc} from "firebase/firestore"; 
 import { database } from "./firebaseSetup";
-import { doc, deleteDoc, getDocs } from 'firebase/firestore';
 
 export async function writeToDB(collectionName, data) {
   // console.log(database);
   // console.log(collectionName);
   // console.log(data);
   try {
-    addDoc(collection(database, collectionName), data);
+    // addDoc(collection(database, collectionName), data);
     const docRef = await addDoc(collection(database, collectionName), data);
     console.log(docRef);
   } catch (err) {
-    console.error("write to db ", err);
+    console.error("Write to db ", err);
   }
 }
 
@@ -21,7 +20,7 @@ export async function deleteFromDB(collectionName, deleteId) {
     await deleteDoc(doc(database, collectionName, deleteId));
   }
   catch (err) {
-    console.log("delete from DB ", err);
+    console.log("Delete from DB ", err);
   }
 }
 
@@ -43,6 +42,19 @@ export async function deleteAllFromDB(collectionName) {
       deleteFromDB(collectionName, docSnapshot.id);
     });
   } catch (err) {
-    console.log("delete all from db", err);
+    console.log("Delete all from DB", err);
+  }
+}
+
+export async function updateFieldInDB (collectionName, docId, data) {
+  try {
+    // Create a reference to the document to be updated
+    const docRef = doc(database, collectionName, docId);
+
+    // Use updateDoc to update an existing document
+    await updateDoc(docRef, data);
+    console.log("Document updated");
+  } catch (err) {
+    console.log("Update field in DB ", err);
   }
 }

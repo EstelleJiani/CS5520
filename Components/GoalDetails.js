@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import PressableButton from './PressableButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { updateFieldInDB } from '../Firebase/firestoreHelper';
 
 export default function GoalDetails({navigation, route}) {
   // Tracking the button press
@@ -17,7 +18,14 @@ export default function GoalDetails({navigation, route}) {
 
   function warningHandler() {
     setWarning((prevWarning)=> !prevWarning);
-  }
+    
+    // Update the warning field in the database
+    if (!warning) {
+      // if the warning is false, set i
+      updateFieldInDB("goals", route.params.goalData.id, {warning: true});
+    } else {
+      updateFieldInDB("goals", route.params.goalData.id, {warning: false});}
+    }
 
   useEffect(() => {
     navigation.setOptions({
