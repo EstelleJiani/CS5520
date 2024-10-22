@@ -21,7 +21,14 @@ export default function GoalUsers() {
         // extract the data
         const data = await response.json();
         // set the users state varible from the fetched data
-        console.log(data[0].name);
+        setUsers(
+          data.map((user) => {
+            return {
+              name: user.name,
+            };
+          })
+        );
+        // console.log(data[0].name);
       } catch (error) {
         console.error("Fetch data error", error);
       }
@@ -30,9 +37,11 @@ export default function GoalUsers() {
     },[]);
   return (
     <View>
-      <FlatList>
-        
-      </FlatList>
+      <FlatList 
+        data={users} 
+        renderItem ={({item})=> {
+          return <Text>item</Text>;
+      }}/>
     </View>
   )
 }
