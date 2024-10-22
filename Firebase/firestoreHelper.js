@@ -58,3 +58,21 @@ export async function updateFieldInDB (collectionName, docId, data) {
     console.log("Update field in DB ", err);
   }
 }
+
+
+export async function getAllDocuments(collectionName) {
+  try {
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    const data = [];
+  if (!querySnapshot.empty) {
+    querySnapshot.forEach((docSnap) => {
+    data.push(docSnap.data());
+  });
+    console.log(data);
+    return data;
+  } 
+  } catch (err) 
+  {
+    console.log("Get all documents ", err);
+  }
+}

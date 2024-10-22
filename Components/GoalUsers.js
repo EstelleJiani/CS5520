@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { writeToDB } from '../Firebase/firestoreHelper';
+import { getAllDocuments, writeToDB } from '../Firebase/firestoreHelper';
 
 export default function GoalUsers({ id }) {
   const [users, setUsers] = useState([]);
@@ -8,6 +8,20 @@ export default function GoalUsers({ id }) {
     // fetch data
     async function fetchData() {
       try {
+        const dataFromDB = await getAllDocuments(`goals/${id}/users`);
+        console.log(dataFromDB);
+        if (dataFromDB) {
+          console.log("reading data from DB");
+          setUsers(
+            dataFromDB.map((user) => {
+              return user.name;
+          })
+        );
+          return;
+        }
+        console.log("reading data from API");
+
+        // check and see if we already have users data in the database, if so use taht , if not fetch from api
         const response = await fetch(
           'https://jsonplaceholder.typicode.com/users'
         );
@@ -22,7 +36,7 @@ export default function GoalUsers({ id }) {
         // extract the data
         const data = await response.json();
         // set the users state varible from the fetched data
-        data.forEach((user) => writeToDB(`goals/ ${id}/users`, data));
+        data.forEach((user) => writeToDB(`goals/${id}/users`, user));
         setUsers(
           data.map((user) => {
             return user.name;
@@ -40,7 +54,7 @@ export default function GoalUsers({ id }) {
       <FlatList 
         data={users} 
         renderItem ={({item})=> {
-          return <Text>item</Text>;
+          return <Text>{item}</Text>;
       }}/>
     </View>
   )

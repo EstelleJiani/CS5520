@@ -49,7 +49,8 @@ export default function GoalDetails({navigation, route}) {
           This is the details of a goal with text {route.params.goalData.text }, 
           and its id is:{route.params.goalData.id}
         </Text>
-        ) : ( <Text style={warning ? styles.warningStyle : null}>More Details</Text> )
+        ) : ( 
+          <Text style={warning ? styles.warningStyle : null}>More Details</Text> )
       }
       <View>
         <Button
@@ -58,7 +59,7 @@ export default function GoalDetails({navigation, route}) {
             navigation.push("Details");
           }}
         />
-        <GoalUsers></GoalUsers>
+        <GoalUsers id={route.params.goalData.id}/>
       </View>
     </View>
   )
