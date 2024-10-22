@@ -10,7 +10,7 @@ export default function GoalUsers({ id }) {
       try {
         const dataFromDB = await getAllDocuments(`goals/${id}/users`);
         console.log(dataFromDB);
-        if (dataFromDB) {
+        if (dataFromDB.length) {
           console.log("reading data from DB");
           setUsers(
             dataFromDB.map((user) => {

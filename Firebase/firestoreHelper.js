@@ -69,8 +69,8 @@ export async function getAllDocuments(collectionName) {
     data.push(docSnap.data());
   });
     console.log(data);
-    return data;
   } 
+   return data;
   } catch (err) 
   {
     console.log("Get all documents ", err);
