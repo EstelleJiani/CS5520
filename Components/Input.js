@@ -1,15 +1,18 @@
 import { View, Text, Button, Modal, TextInput, StyleSheet, Alert, Image} from 'react-native'
 import React, {useState} from 'react'
+import ImageManager from './ImageManager'
 
 export default function Input(props) {
   const [text, setText] = useState("");
   const [showCounter, setShowCounter] = useState(true);
-  
+  const [imageUri, setImageUri] = useState("");
+
+
   function handleConfirm() {
     // console.log(text);
     // call the callback function received from the App.js component
     // and pass the text that user has typed
-    props.inputHandler(text);
+    props.inputHandler({text, imageUri: imageUri});
     setText("");
   }
 
@@ -26,6 +29,13 @@ export default function Input(props) {
     setShowCounter(false);
     props.inputHandler("");
   }
+
+  function imageUriHandler(uri) {
+    console.log("Image uri handler", uri);
+    setImageUri(uri);
+  }
+
+
   return (
     <Modal animationType='slide' transparent={true} visible={props.visibility}>
       <View style={styles.container}>
@@ -57,6 +67,8 @@ export default function Input(props) {
               setShowCounter(true)
             }}
           />
+
+          <ImageManager imageUriHandler={imageUriHandler}/>
 
           <Text>{showCounter ? 
             (text.length > 0 ? text.length : "") :

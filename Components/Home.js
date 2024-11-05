@@ -47,10 +47,10 @@ export default function Home({navigation}) {
   }, []);
 
 
-  function handleInputData(data){
+  function handleInputData(data) {
     console.log("App.js", data);
     // let newGoal = {text: data, id: Math.random()};
-    let newGoal = {text: data};
+    let newGoal = {text: data.text};
 
     // add info about the owner of the goal
     newGoal = {...newGoal, owner: auth.currentUser.uid};
