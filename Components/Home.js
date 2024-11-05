@@ -5,10 +5,9 @@ import Input from './Input';
 import GoalItem from './GoalItem';
 import { useState, useEffect } from 'react';
 import PressableButton from './PressableButton';
-import { database } from '../Firebase/firebaseSetup';
+import { auth, database } from '../Firebase/firebaseSetup';
 import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { collection } from 'firebase/firestore';
+import { doc, onSnapshot,collection, query, where } from 'firebase/firestore';
 
 export default function Home({navigation}) {
   // console.log(database);
@@ -22,17 +21,27 @@ export default function Home({navigation}) {
 
   useEffect(() => {
     // Set up th listener and store the information
-    const stopListening = onSnapshot(collection(database, "goals"), (querySnapshot) => {
-      let goals = [];
-      querySnapshot.forEach((docSnapshot) => {
-        console.log(docSnapshot.id);
-        // Add the document data and id to the goals array
-        goals.push({ ...docSnapshot.data(), id: docSnapshot.id });
-        console.log(goals);
-      });
+    const stopListening = onSnapshot(
+      query(
+        collection(database, "goals"),
+        where("owner", "==", auth.currentUser.uid)
+        ),
+      (querySnapshot) => {
+        let goals = [];
+        querySnapshot.forEach((docSnapshot) => {
+          console.log(docSnapshot.id);
+          // Add the document data and id to the goals array
+          goals.push({ ...docSnapshot.data(), id: docSnapshot.id });
+          // console.log(goals);
+        });
       // render the goals array
       setGoals(goals);
-    });
+    },
+    (error) => {
+      console.log("Error reading data", error);
+      Alert.alert(error.message);
+    }
+  );
     // return the cleanup function so to stop listening
     return () => stopListening();
   }, []);
@@ -42,7 +51,13 @@ export default function Home({navigation}) {
     console.log("App.js", data);
     // let newGoal = {text: data, id: Math.random()};
     let newGoal = {text: data};
+
+    // add info about the owner of the goal
+    newGoal = {...newGoal, owner: auth.currentUser.uid};
+
     writeToDB( "goals",newGoal);
+
+
 
     // make a niew obj and store the received data as the obj's text
     // setGoals((prevGoals)=>{
