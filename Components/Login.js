@@ -23,6 +23,7 @@ export default function Login({ navigation }) {
       console.log(userCred);
     } catch (err) {
       console.log("sign in ", err);
+      Alert.alert(err.message);
     }
   };
 

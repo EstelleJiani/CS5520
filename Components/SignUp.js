@@ -41,6 +41,8 @@ export default function Signup({ navigation }) {
         Alert.alert("Email is invalid");
       } else if (err.code === "auth/missing-password") {
         Alert.alert("Password is missing");
+      } else {
+        Alert.alert(err.message);
       }
     }
   };
