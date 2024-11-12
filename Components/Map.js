@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { Button, StyleSheet } from 'react-native'
 import MapView, { Marker }from 'react-native-maps';
 
-const Map = ({navigation}) => {
+export default function Map({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
+
   return (
     <>
       <MapView
         initialRegion={{
-          latitude: 37.78,
-          longitude: -122.43,
+          latitude: 37.78825,
+          longitude: -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -21,8 +22,11 @@ const Map = ({navigation}) => {
           });
         }}
       >
-        <Marker coordinate={selectedLocation}/>
+        {selectedLocation &&
+          <Marker coordinate={selectedLocation}/>
+        }
       </MapView>
+      
       <Button
         title="Confirm Selected Location"
         onPress={()=>{
@@ -33,8 +37,6 @@ const Map = ({navigation}) => {
     </>
   );
 }
-
-export default Map;
 
 const styles = StyleSheet.create({
   map: {

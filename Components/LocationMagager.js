@@ -1,14 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import {
+  Alert,
+  Button,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
 import * as Location from 'expo-location';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { auth } from '../Firebase/firebaseSetup';
+import { getADoc, writeWithIdtoDB } from '../Firebase/firestoreHelper';
 
+const windowWidth = Dimensions.get("window").width;
 
 export default function LocationMagager() {
   const navigation = useNavigation();
   const route = useRoute();
-  
-  const [response, requestPermission] = Location.useLocationPermissions();
+
+  const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
@@ -27,7 +38,7 @@ export default function LocationMagager() {
     getUserData();
   }, []);
 
-  async function verifyPermission() {
+  const verifyPermission = async () => {
     console.log(response);
 
     if (response.granted) {
@@ -37,7 +48,7 @@ export default function LocationMagager() {
     return permissionResponse.granted;
   }
 
-  async function locateUserHandler() {
+  const locateUserHandler = async () => {
     try {
       const hasPermission = await verifyPermission();
       if (!hasPermission) {
@@ -55,39 +66,43 @@ export default function LocationMagager() {
     }
   }
 
-  function chooseLocationHandler() {
+  const chooseLocationHandler = () => {
     navigation.navigate("Map");
   }
 
-  function saveUserLocationHandler() {
-    writeWithIdtoDB({location}, "users", auth.currentUser.uid);
+  const saveUserLocationHandler = () => {
+    writeWithIdtoDB("users", auth.currentUser.uid, { location });
     navigation.navigate("Home");
-    };
+  }
 
   return (
     <View>
       <Button 
         title="Locate Me" 
         onPress={locateUserHandler}/>
+      <Button
+        title="Choose Location"
+        onPress={chooseLocationHandler}/>
       {location && (
         <Image 
-        source={{
-          uri:`https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_mapsApiKey}`
-        }}
+          source={{
+            uri:`https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_mapsApiKey}`
+          }}
+          style={styles.image}
         />
       )}
       <Button
         disabled={!location}
-        title="Choose Location"
+        title="Save Location"
         onPress={saveUserLocationHandler}
-        />
+      />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  image : {
+  image: {
     width: windowWidth,
-    height: 200
+    height: 200,
   }
 })
