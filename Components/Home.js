@@ -1,16 +1,15 @@
+import { useState, useEffect } from 'react';
+import { Alert, Button, FlatList, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, ScrollView, FlatList, Alert} from 'react-native';
+import Constants from 'expo-constants';
 import Header from "./Header";
 import Input from './Input';
 import GoalItem from './GoalItem';
-import { useState, useEffect } from 'react';
-import PressableButton from './PressableButton';
-import { auth, database } from '../Firebase/firebaseSetup';
+import * as Notifications from 'expo-notifications';
+import { auth, database, storage } from '../Firebase/firebaseSetup';
 import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper';
-import { doc, onSnapshot,collection, query, where } from 'firebase/firestore';
-import { ref } from 'firebase/storage';
-import { storage } from '../Firebase/firebaseSetup';
-import { uploadBytesResumable } from 'firebase/storage';
+import { onSnapshot,collection, query, where, ref, uploadBytesResumable } from 'firebase/firestore';
+import { verifyPermission } from "./NotificationManager";
 
 export default function Home({navigation}) {
   // console.log(database);
@@ -21,6 +20,32 @@ export default function Home({navigation}) {
   const[modalVisible, setModalVisible] = useState(false);
   // {text:..., id:...}
   const[goals, setGoals] = useState([]); 
+
+  useEffect(() => {
+    async function getToken() {
+      try {
+        const hasPermission = await verifyPermission();
+        if (!hasPermission) {
+          Alert.alert("You need to give permission for push token");
+          return;
+        }
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+          });
+        }
+
+        const tokenData = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+        console.log(tokenData);
+      } catch (err) {
+        console.log("token ", err);
+      }
+    }
+    getToken();
+  }, []);
 
   useEffect(() => {
     // Set up th listener and store the information
@@ -48,7 +73,6 @@ export default function Home({navigation}) {
     // return the cleanup function so to stop listening
     return () => stopListening();
   }, []);
-
 
   async function fetchAndUploadImage(uri) {
     try{
