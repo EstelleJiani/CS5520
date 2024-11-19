@@ -4,7 +4,10 @@ import MapView, { Marker }from 'react-native-maps';
 
 export default function Map({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
-
+  function confirmHandler () {
+    // navigate to the profile screen with the selected location
+    navigation.navigate("Profile", {selectedLocation});
+  }
   return (
     <>
       <MapView
@@ -29,9 +32,7 @@ export default function Map({ navigation }) {
       
       <Button
         title="Confirm Selected Location"
-        onPress={()=>{
-          navigation.navigate("Profile", {selectedLocation});
-        }}
+        onPress={()=>{confirmHandler();}}
         disabled={!selectedLocation}
       />
     </>

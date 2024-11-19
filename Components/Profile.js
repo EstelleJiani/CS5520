@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { auth } from "../Firebase/firebaseSetup";
 import LocationMagager from "./LocationMagager";
+import NotificationManager from "./NotificationManager";
 
 export default function Profile() {
   const user = auth.currentUser;
@@ -20,6 +21,7 @@ export default function Profile() {
       <Text>{user.email}</Text>
       <Text>{user.uid}</Text>
       <LocationMagager />
+      <NotificationManager />
     </View>
   );
 }

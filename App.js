@@ -12,6 +12,7 @@ import Login from './Components/Login';
 import Signup from './Components/SignUp';
 import Profile from './Components/Profile';
 import Map from './Components/Map';
+import * as Notifications from 'expo-notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +95,13 @@ const AppStack = (
     <Stack.Screen name="Map" component={Map} />
   </>
 );
+
+Notifications.setNotificationHandler({
+  handleNotification: async (notification) => {
+    return { shouldShowAlert: true };
+  },
+});
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   useEffect(() => {
