@@ -34,6 +34,7 @@ export default function Map({ navigation }) {
         title="Confirm Selected Location"
         onPress={()=>{
           navigation.navigate("Profile", {selectedLocation});
+          confirmHandler();
         }}
         disabled={!selectedLocation}
       />
