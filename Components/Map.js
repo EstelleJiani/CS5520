@@ -32,10 +32,7 @@ export default function Map({ navigation }) {
       
       <Button
         title="Confirm Selected Location"
-        onPress={()=>{
-          navigation.navigate("Profile", {selectedLocation});
-          confirmHandler();
-        }}
+        onPress={()=>{confirmHandler();}}
         disabled={!selectedLocation}
       />
     </>
