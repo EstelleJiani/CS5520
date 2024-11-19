@@ -35,7 +35,6 @@ export default function Input(props) {
     setImageUri(uri);
   }
 
-
   return (
     <Modal animationType='slide' transparent={true} visible={props.visibility}>
       <View style={styles.container}>

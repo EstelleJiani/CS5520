@@ -8,6 +8,9 @@ import PressableButton from './PressableButton';
 import { auth, database } from '../Firebase/firebaseSetup';
 import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper';
 import { doc, onSnapshot,collection, query, where } from 'firebase/firestore';
+import { ref } from 'firebase/storage';
+import { storage } from '../Firebase/firebaseSetup';
+import { uploadBytesResumable } from 'firebase/storage';
 
 export default function Home({navigation}) {
   // console.log(database);
@@ -47,17 +50,45 @@ export default function Home({navigation}) {
   }, []);
 
 
-  function handleInputData(data) {
+  async function fetchAndUploadImage(uri) {
+    try{
+      const response = await fetch(uri);
+      console.log("Response:", response);
+      if (!response.ok) {
+        throw new Error("The request was not successful");
+      }
+      const blob = await response.blob();
+      console.log("Blob:", blob);
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      console.log("Image Name:", imageName);
+      const imageRef = ref(storage, `images/${imageName}`);
+      console.log("Image Ref:", imageRef);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      console.log(uploadResult.metadata.fullPath);
+      return uploadResult.metadata.fullPath;
+    } catch(err) {
+      console.log("fetch and upload image", err);
+    }
+  }
+
+  async function handleInputData(data) {
     console.log("App.js", data);
+
+    let imageUri = "";
+    if (data.imageUri){
+      imageUri = await fetchAndUploadImage(data.imageUri);
+    }
+
+    console.log("retrieved image uri:", imageUri);
     // let newGoal = {text: data, id: Math.random()};
     let newGoal = {text: data.text};
 
     // add info about the owner of the goal
     newGoal = {...newGoal, owner: auth.currentUser.uid};
-
+    if(imageUri){
+      newGoal = {...newGoal, imageUri: imageUri};
+    }
     writeToDB( "goals",newGoal);
-
-
 
     // make a niew obj and store the received data as the obj's text
     // setGoals((prevGoals)=>{

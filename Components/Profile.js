@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { auth } from "../Firebase/firebaseSetup";
+import LocationMagager from "./LocationMagager";
 
 export default function Profile() {
   const user = auth.currentUser;
@@ -18,6 +19,7 @@ export default function Profile() {
     <View>
       <Text>{user.email}</Text>
       <Text>{user.uid}</Text>
+      <LocationMagager />
     </View>
   );
 }

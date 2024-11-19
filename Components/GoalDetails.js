@@ -1,21 +1,16 @@
-import { StyleSheet, Text, View, Button} from 'react-native'
+import { StyleSheet, Text, View, Button, Image} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import PressableButton from './PressableButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { updateFieldInDB } from '../Firebase/firestoreHelper';
 import GoalUsers from './GoalUsers';
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../Firebase/firebaseSetup";
 
 export default function GoalDetails({navigation, route}) {
   // Tracking the button press
   const[warning, setWarning] = useState(false);
-
-  // Set the title to the goal's name when screen loads
-  useEffect(() => {
-      navigation.setOptions({
-        title: route.params ? route.params.goalData.text : "Details",
-      });
-  }, [navigation, route.params]);
-
+  const[imageUri, setImageUri] = useState("");
 
   function warningHandler() {
     setWarning((prevWarning)=> !prevWarning);
@@ -27,6 +22,31 @@ export default function GoalDetails({navigation, route}) {
     } else {
       updateFieldInDB("goals", route.params.goalData.id, {warning: false});}
     }
+
+  useEffect(() => {
+    async function getImageUrl(){
+      if (route.params) {
+        try{
+          const uri = await getDownloadURL(
+            ref(storage, route.params.goalData.imageUri)
+          );
+          console.log("URL:", uri);
+          setImageUri(uri);
+        } catch (err) {
+          console.log("Get image uri", err);
+        }
+      }
+    }
+    getImageUrl();
+  }, []);
+
+  // Set the title to the goal's name when screen loads
+  useEffect(() => {
+      navigation.setOptions({
+        title: route.params ? route.params.goalData.text : "Details",
+      });
+  }, [navigation, route.params]);
+
 
   useEffect(() => {
     navigation.setOptions({
@@ -45,13 +65,26 @@ export default function GoalDetails({navigation, route}) {
   return (
     <View style={styles.container}>
       {route.params ? (
-        <Text style={warning ? styles.warningStyle : null}>
-          This is the details of a goal with text {route.params.goalData.text }, 
-          and its id is:{route.params.goalData.id}
+        <View>
+          <Text style={warning ? styles.warningStyle : null}>
+            This is the details of a goal with text:
+            {route.params.goalData.text }, and its id is:{route.params.goalData.id}
         </Text>
-        ) : ( 
-          <Text style={warning ? styles.warningStyle : null}>More Details</Text> )
-      }
+        {imageUri && (
+          <Image
+            source={{
+              uri: imageUri
+            }}
+            style={styles.image}
+          />
+        )}
+        </View>
+      ) : ( 
+        <Text style={warning ? styles.warningStyle : null}>
+          More Details
+        </Text> 
+      )}
+      
       <View>
         <Button
           title="More Details"
@@ -76,5 +109,9 @@ const styles = StyleSheet.create({
   },
   pressedWarningButtonStyle:{
     backgroundColor: 'orange',
+  },
+  image:{
+    width: 200,
+    height: 200,
   },
 })
